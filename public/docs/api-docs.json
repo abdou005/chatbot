@@ -1,0 +1,277 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "ChatBot-API"
+  },
+  "paths": {
+    "/api/register": {
+      "post": {
+        "description": "user registration",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "email address of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "user password",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "first_name",
+            "in": "formData",
+            "description": "user first_name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "last_name",
+            "in": "formData",
+            "description": "user last_name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "image to upload (jpg or png)",
+            "required": false,
+            "type": "file"
+          }
+        ],
+        "tags": [
+          "user without token"
+        ],
+        "responses": {
+          "200": {
+            "description": "success: return user + token"
+          },
+          "422": {
+            "description": "error: return array of validation fields"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "description": "login user",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "email address of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "password",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "user without token"
+        ],
+        "responses": {
+          "200": {
+            "description": "success: return user + token"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "406": {
+            "description": "User disabled"
+          }
+        }
+      }
+    },
+    "/api/logout": {
+      "post": {
+        "description": "logout user",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "'Bearer ' + token ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "user with token"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "401": {
+            "description": " wrong token , missing token "
+          }
+        }
+      }
+    },
+    "/api/my-profile": {
+      "get": {
+        "description": "get the authenticated user's profile",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "'Bearer ' + token ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "user with token"
+        ],
+        "responses": {
+          "200": {
+            "description": " success "
+          },
+          "401": {
+            "description": " wrong token , missing token "
+          },
+          "406": {
+            "description": "User disabled"
+          }
+        }
+      }
+    },
+    "/api/groups": {
+      "get": {
+        "description": "get groups",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "'Bearer ' + token ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "user with token"
+        ],
+        "responses": {
+          "200": {
+            "description": " success return list group"
+          },
+          "401": {
+            "description": " wrong token , missing token "
+          },
+          "406": {
+            "description": "User disabled"
+          }
+        }
+      }
+    },
+    "/api/groups/{group_id}/questions": {
+      "get": {
+        "description": "search questions by group",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "'Bearer ' + token ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "group_id",
+            "in": "path",
+            "description": "group_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "user with token"
+        ],
+        "responses": {
+          "200": {
+            "description": " success "
+          },
+          "401": {
+            "description": " wrong token , missing token "
+          },
+          "406": {
+            "description": "User disabled"
+          }
+        }
+      }
+    },
+    "/api/response-to-question/": {
+      "post": {
+        "description": "get the authenticated user's profile",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "'Bearer ' + token ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "question_id",
+            "in": "formData",
+            "description": "question_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "tags": [
+          "user with token"
+        ],
+        "responses": {
+          "200": {
+            "description": " success "
+          },
+          "401": {
+            "description": " wrong token , missing token "
+          },
+          "406": {
+            "description": "User disabled"
+          }
+        }
+      }
+    }
+  }
+}
+
