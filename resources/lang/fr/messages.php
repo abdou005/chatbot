@@ -74,4 +74,9 @@ return [
     'delete_group' => 'Êtes-vous sûr de vouloir supprimer ce groupe',
     'delete_question' => 'Êtes-vous sûr de vouloir supprimer cette question',
 
+    'users_stat' => 'Stat utilisateur',
+    'groups_stat' => 'Stat groupe',
+    'questions_stat' => 'Stat question',
+    'histories' => 'Historiques',
+
 ];

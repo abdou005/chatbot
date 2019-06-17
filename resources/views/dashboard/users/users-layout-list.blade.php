@@ -74,6 +74,8 @@
 <script src="{{asset('plugins/Bootstrap-Confirmation/bootstrap-confirmation.js')}}"></script>
 <script src="{{asset('plugins/Datatables/jquery.dataTables.js')}}"></script>
 <script src="{{asset('plugins/Datatables/dataTables.bootstrap.js')}}"></script>
+<!-- ChartJS 1.0.1 -->
+<script src="{{asset('plugins/chartjs/Chart.min.js')}}"></script>
 
 <script>
     var deleteMessage = '{{trans('messages.delete_user')}}';

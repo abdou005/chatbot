@@ -18,10 +18,21 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/profile', 'UserController@getProfile')->name('profile');
     Route::post('/user/{id}', 'UserController@updateUser')->name('user-update');
+    Route::get('/histories', 'UserController@histories')->name('histories');
+    Route::get('/groups-select', 'GroupController@getGroupsSelect')->name('group-select');
+    Route::get('/questions-select', 'GroupController@getQuestionsSelect')->name('question-select');
 
-
+    Route::get('/group/{id}/histories', 'UserController@getHistoriesByGroup')->name('group-histories');
+    Route::post('/response-to-question/{id}', 'UserController@responseToQuestion')->name('response-to-question-web');
 });
+
 Route::group(['middleware' => ['auth', 'admin']], function () {
+
+    Route::get('/graph/user', 'GraphController@getGraphUser')->name('users-stat');
+    Route::get('/graph/group', 'GraphController@getGraphGroup')->name('groups-stat');
+    Route::get('/graph/question', 'GraphController@getGraphQuestion')->name('questions-stat');
+
+
     Route::get('/user', 'UserController@getusers')->name('user');
     Route::delete('/user/{id}', 'UserController@removeUser')->name('user-remove');
     Route::post('/user/status/{id}', 'UserController@updateStatus')->name('user-status');
@@ -32,7 +43,6 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/group/{id}', 'GroupController@findGroup')->name('group-find');
     Route::delete('/group/{id}', 'GroupController@removeGroup')->name('group-remove');
 
-    Route::get('/groups-select', 'GroupController@getGroupsSelect')->name('group-select');
 
     Route::get('/question', 'QuestionController@getQuestions')->name('question');
     Route::post('/question', 'QuestionController@createQuestion')->name('question-create');
