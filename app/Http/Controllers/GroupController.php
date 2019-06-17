@@ -90,7 +90,10 @@ class GroupController extends Controller
             ->join('questions', 'questions.id', '=', 'histories.question_id')
             ->where('questions.group_id', '=', $groupId)->select('histories.question_id')->get();
         $incompleteResults = true;
-        $questions = Question::where('question', 'LIKE', '%' . $name . '%')->whereNotIn('id', $histories)->paginate(10);
+        $questions = Question::where('question', 'LIKE', '%' . $name . '%')
+            ->whereNotIn('id', $histories)
+            ->where('group_id', '=', $groupId)
+            ->paginate(10);
         $questionsAr = $questions->toArray();
         if ($questionsAr['next_page_url'] == null) {
             $incompleteResults = false;
