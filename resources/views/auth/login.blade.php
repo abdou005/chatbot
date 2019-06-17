@@ -52,7 +52,7 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
-                    {{--<a class="btn btn-link text-red" href="{{ route('register') }}" class="text-center">@lang('messages.subject_register')</a>--}}
+                    <a class="btn btn-link text-red" href="{{ route('register') }}" class="text-center">@lang('messages.subject_register')</a>
                 </div>
                 <!-- /.col -->
             </div>

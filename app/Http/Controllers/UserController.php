@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\History;
+use App\Question;
 use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -10,6 +12,39 @@ use Validator;
 
 class UserController extends Controller
 {
+
+    public function histories(){
+        return view('dashboard.histories.histories-layout-list');
+    }
+
+    public function getHistoriesByGroup($groupId, Request $request)
+    {
+        $user = auth()->user();
+        $histories = $user->histories()
+            ->join('questions', 'questions.id', '=', 'histories.question_id')
+            ->where('questions.group_id', '=', $groupId)
+            ->with(['question' => function ($question) {
+            $question->with('group');
+        }])->orderBy('histories.created_at', 'desc')->get();
+        return response()->json($histories, 200);
+    }
+
+    public function responseToQuestion($questionId)
+    {
+        $question = Question::findOrFail($questionId);
+        $user = auth()->user();
+        $history = $user->histories()->where('question_id', '=', $question->id)->first();
+        if ($history){
+            return response()->json(['message' => 'history already exist'], 406);
+        }
+        $history = new History();
+        $history->user_id = $user->id;
+        $history->question_id = $question->id;
+        $history->save();
+        $history->question = $question;
+        $history->user = $user;
+        return response()->json($history, 200);
+    }
 
     public function getProfile()
     {
@@ -23,7 +58,7 @@ class UserController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => [
                 'required', 'email', 'max:255',
-                Rule::unique('users')->where(function ($query) use ($userId) {
+                Rule::unique('users')->historieswhere(function ($query) use ($userId) {
                     $query->where('id', '!=', $userId);
                 }),
             ],

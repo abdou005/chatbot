@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GroupRequest;
+use App\Question;
 use App\Repositories\GroupRepository;
 use App\Group;
 use Illuminate\Http\Request;
@@ -77,6 +78,38 @@ class GroupController extends Controller
         return response()->json($results, 200);
     }
 
+    public function getQuestionsSelect(Request $request)
+    {
+        $name = $request->get('q');
+        $groupId = $request->get('group_id');
+        if (!$groupId){
+            return response()->json(['message' => 'group required'], 406);
+        }
+        $user = auth()->user();
+        $histories = $user->histories()
+            ->join('questions', 'questions.id', '=', 'histories.question_id')
+            ->where('questions.group_id', '=', $groupId)->select('histories.question_id')->get();
+        $incompleteResults = true;
+        $questions = Question::where('question', 'LIKE', '%' . $name . '%')->whereNotIn('id', $histories)->paginate(10);
+        $questionsAr = $questions->toArray();
+        if ($questionsAr['next_page_url'] == null) {
+            $incompleteResults = false;
+        }
+        $results = [
+            "total_count" => $questionsAr['total'],
+            "incomplete_results" => $incompleteResults,
+            'items' => $this->transformDataQuestion($questions)
+        ];
+        return response()->json($results, 200);
+    }
+    private function transformDataQuestion($questions)
+    {
+        $data = [];
+        foreach ($questions as $question) {
+            array_push($data, ['id' => $question->id, 'text' => $question->question]);
+        }
+        return ($data);
+    }
     private function transformData($groups)
     {
         $data = [];

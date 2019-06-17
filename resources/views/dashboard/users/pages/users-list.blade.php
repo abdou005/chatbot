@@ -64,7 +64,6 @@
         <div class="box-footer clearfix no-border">
         </div>
     </div>
-
     <!-- /.row -->
 </section>
 <!-- /.content -->

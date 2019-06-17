@@ -22,3 +22,18 @@ function displayMessage(message, id, time) {
 function showImage(image) {
     $('#modalImage .modal-body').html('<img src="'+image+'" class="img-responsive" style="margin: 0 auto; height: 400px">');
 }
+
+/**
+ *
+ * @param date
+ * @param minusDay
+ * @returns {Date}
+ */
+function convertDate(date, minusDay) {
+    var dateArray = date.split("-");
+    console.log(dateArray);
+    if (minusDay) {
+        return new Date((dateArray.map(Number)[2]), (dateArray.map(Number)[1] - 1), (dateArray.map(Number)[0]) - 1);
+    }
+    return new Date((dateArray.map(Number)[2]), (dateArray.map(Number)[1] - 1), (dateArray.map(Number)[0]));
+}
