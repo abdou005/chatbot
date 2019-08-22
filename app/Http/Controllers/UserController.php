@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -14,6 +15,18 @@ class UserController extends Controller
     public function getProfile()
     {
         return view('dashboard.profile.profile-layout-list');
+    }
+
+    public function addUser(UserRequest $request){
+
+        $firstName = $request->get('first_name');
+        $lastName = $request->get('last_name');
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $image = $request->file('image');
+
+
+        return response()->json(['status' => 'success', 'message' => 'Utilisateur ajouté avec succes'], 200);
     }
 
     public function updateUser($userId, Request $request)
@@ -81,7 +94,6 @@ class UserController extends Controller
 
     public function updateStatus($userId){
         $user = User::findOrFail($userId);
-        $status = $user->status;
         if($user->status === 1){
             $user->status = 0;
         }else{

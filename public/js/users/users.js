@@ -110,6 +110,84 @@ $('body').confirmation({
         deleteUser($(this).data('userId'));
     }
 });
+
+/**
+ * Clear addEditGroupForm form ,clear inputs when the user close the modal window
+ */
+$("#add-edit-user-modal").on("hidden.bs.modal", function () {
+    $('.form-group div').removeClass('has-error');
+    $('.help-block').empty();
+    $('#save-user').prop('disabled',false);
+    $('#add-user-form').attr('action','');
+    $('#modal-user-title').html(addUserMessageTitle);
+    $(this).find("input")
+        .val('')
+        .end();
+});
+
+/**
+ * ajax function when user submit form
+ * Add Edit User
+ */
+$(function(){
+    $('#add-user-form').submit(function (event) {
+        event.preventDefault();
+        $('#save-user').prop('disabled',true);
+        var formData = new FormData($('#add-user-form')[0]);
+        var url = $('#add-user-form')[0].action;
+        $.ajax({
+            method : 'POST',
+            url : url,
+            data : formData,
+            contentType: false,
+            processData: false
+        }).done(function (data) {
+            displayMessage(data.message, 'panelSuccess', 1000);
+            usersTable.ajax.reload();
+            $('#add-edit-user-modal').modal('toggle');
+        }).error(function (data) {
+            $('#save-user').prop('disabled',false);
+            var errors = data.responseJSON.errors;
+            $('.form-group').removeClass('has-error');
+            $('.help-block').empty();
+            $.each(errors, function( index, value ) {
+                $("."+index+"_error ").append("<strong>"+value.join('<br/>')+"</strong>");
+                $('.'+index+"_error ").parent().addClass('has-error');
+            })
+        });
+    });
+});
+
+/**
+ *Attach Click event to editUser class using delegation
+ */
+$(function () {
+    $( "#users-table" ).on( "click",".edit-user", function( event ) {
+        event.preventDefault();
+        var userId = ($(this).data('userId'));
+        $('#add-user-form').attr('action', window.location.pathname + (window.location.pathname.slice(-1) == '/' ? '' : '/') +userId);
+        $('#modal-user-title').html(editUserMessageTitle);
+        onEditUserClick();
+    });
+});
+
+/**
+ * Ajax function edit User
+ */
+function onEditUserClick(){
+    var url = $('#add-user-form')[0].action;
+    $.ajax({
+        method : 'GET',
+        url : url,
+        data : {}
+    }).done(function (user) {
+        $("#title").val(group.title);
+        $('#desc').val(group.desc);
+        $('#add-edit-group-modal').modal('toggle');
+    }).error(function (data) {
+    });
+}
+
 /**
  * ajax function
  * @param userId

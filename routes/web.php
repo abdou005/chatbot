@@ -22,7 +22,14 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 Route::group(['middleware' => ['auth', 'admin']], function () {
+
+    Route::get('/graph/user', 'GraphController@getGraphUser')->name('users-stat');
+    Route::get('/graph/group', 'GraphController@getGraphGroup')->name('groups-stat');
+    Route::get('/graph/question', 'GraphController@getGraphQuestion')->name('questions-stat');
+
+
     Route::get('/user', 'UserController@getusers')->name('user');
+    Route::post('/user', 'UserController@addUser')->name('user-create');
     Route::delete('/user/{id}', 'UserController@removeUser')->name('user-remove');
     Route::post('/user/status/{id}', 'UserController@updateStatus')->name('user-status');
 

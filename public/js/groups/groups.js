@@ -134,6 +134,7 @@ $(function(){
         });
     });
 });
+
 /**
  *Attach Click event to editGroup class using delegation
  */
@@ -146,6 +147,7 @@ $(function () {
         onEditGroupClick();
     });
 });
+
 /**
  * Ajax function edit Group
  */
@@ -162,6 +164,7 @@ function onEditGroupClick(){
     }).error(function (data) {
     });
 }
+
 /**
  * ajax function
  * @param groupId

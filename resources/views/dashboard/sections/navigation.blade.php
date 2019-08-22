@@ -35,14 +35,29 @@
                     <i class="fa fa-users"></i> <span>@lang('messages.users')</span>
                 </a>
             </li>
+            <li class="@yield('users_stat') treeview">
+                <a href="{{route('users-stat')}}">
+                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.users_stat')</span>
+                </a>
+            </li>
             <li class="@yield('groups') treeview">
                 <a href="{{route('group')}}">
                     <i class="fa fa-map-o"></i> <span>@lang('messages.groups')</span>
                 </a>
             </li>
+            <li class="@yield('groups_stat') treeview">
+                <a href="{{route('groups-stat')}}">
+                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.groups_stat')</span>
+                </a>
+            </li>
             <li class="@yield('questions') treeview">
                 <a href="{{route('question')}}">
                     <i class="fa fa-question-circle"></i> <span>@lang('messages.questions')</span>
+                </a>
+            </li>
+            <li class="@yield('questions_stat') treeview">
+                <a href="{{route('questions-stat')}}">
+                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.questions_stat')</span>
                 </a>
             </li>
             @endif
