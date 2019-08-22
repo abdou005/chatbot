@@ -29,6 +29,11 @@
                     <i class="fa fa-user-o"></i> <span>@lang('messages.profile')</span>
                 </a>
             </li>
+            <li class="@yield('histories') treeview">
+                <a href="{{route('histories')}}">
+                    <i class="fa fa-commenting-o"></i> <span>@lang('messages.histories')</span>
+                </a>
+            </li>
             @if(Auth::user()->role === \App\User::ADMIN)
             <li class="@yield('users') treeview">
                 <a href="{{route('user')}}">

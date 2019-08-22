@@ -12,7 +12,7 @@
         <div class="register-box-body">
             <p class="login-box-msg">@lang('messages.subject_register')</p>
 
-            <form method="POST" action="">
+            <form method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="form-group has-feedback {{ $errors->has('first_name') ? ' has-error' : '' }}">
                     <input type="text" name="first_name" class="form-control" placeholder="@lang('messages.first_name')" value="{{old('first_name')}}" required autofocus>
@@ -65,7 +65,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        {{--<button type="submit" class="btn btn-danger btn-block btn-flat">@lang('messages.subject_register')</button>--}}
+                        <button type="submit" class="btn btn-danger btn-block btn-flat">@lang('messages.subject_register')</button>
                     </div>
                     <!-- /.col -->
                 </div>
