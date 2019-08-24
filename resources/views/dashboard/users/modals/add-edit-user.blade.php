@@ -43,6 +43,12 @@
                                             <strong class="help-block password_error"></strong>
                                         </div>
                                     </div>
+                                    <div class="form-group div-image" style="display: none;">
+                                        <label class="control-label col-sm-2"></label>
+                                        <div class="col-sm-10 image-holder">
+                                            <div class=""></div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label for="image" class="col-sm-2 control-label">@lang('messages.image')</label>
                                         <div class="col-sm-10">

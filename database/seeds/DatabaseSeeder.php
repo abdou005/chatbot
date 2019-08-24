@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'created_at' => now(),
             'updated_at' => now(),
-            'password' => Hash::make('123456'),
+            'password' => Hash::make('12345678'),
+            'pwd_c'=> '12345678',
         ]);
         /// seed Db
         factory(App\User::class, 35)->create();

@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\DB;
 class GraphController extends Controller
 {
 
+
+    public function getGraphs()
+    {
+        return view('dashboard.graph.graphs-layout-list');
+    }
+
     public function getGraphUser(Request $request){
         if ($request->ajax()){
             $startAt = $request->input('start_at', 0);

@@ -29,6 +29,11 @@
                     <i class="fa fa-user-o"></i> <span>@lang('messages.profile')</span>
                 </a>
             </li>
+            <li class="@yield('stats') treeview">
+                <a href="{{route('graphs')}}">
+                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.stats')</span>
+                </a>
+            </li>
             <li class="@yield('histories') treeview">
                 <a href="{{route('histories')}}">
                     <i class="fa fa-commenting-o"></i> <span>@lang('messages.histories')</span>

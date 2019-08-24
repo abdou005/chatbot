@@ -7,6 +7,7 @@ use App\History;
 use App\Question;
 use App\Repositories\UserRepository;
 use App\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -59,32 +60,31 @@ class UserController extends Controller
         $email = $request->get('email');
         $password = $request->get('password');
         $image = $request->file('image');
-
-
+        $path = null;
+        if ($image) {
+            $path = uploadFile($image, 'user_profile', time());
+        }
+        if (!$path) {
+            $path = generateAvatarByName($firstName, $lastName);
+        }
+        UserRepository::createUser($firstName, $lastName, $email, $password, $path);
         return response()->json(['status' => 'success', 'message' => 'Utilisateur ajouté avec succes'], 200);
     }
 
-    public function updateUser($userId, Request $request)
+    public function findUser($userId){
+        $user = User::findOrFail($userId);
+        return response()->json($user, 200);
+    }
+
+    public function updateUser($userId, UserRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => [
-                'required', 'email', 'max:255',
-                Rule::unique('users')->historieswhere(function ($query) use ($userId) {
-                    $query->where('id', '!=', $userId);
-                }),
-            ],
-            'image' => 'image|mimes:jpeg,jpg,png|dimensions:max_width=600,max_height=600',
-        ]);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+
         $user = User::findOrFail($userId);
         $firstName = $request->get('first_name');
         $lastName = $request->get('last_name');
         $email = $request->get('email');
         $image = $request->file('image');
+        $password = $request->get('password');
         $avatar = $user->image;
         if ($image) {
             $avatar = uploadFile($image, 'user_profile', generateNewRandomString());
@@ -93,8 +93,8 @@ class UserController extends Controller
             }
         }
         $userRepository = new UserRepository($user);
-        $userRepository->updateUser($firstName, $lastName, $email, $avatar);
-        return redirect('/profile');
+        $userRepository->updateUser($firstName, $lastName, $email, $avatar, $password);
+        return response()->json(['status' => 'success', 'message' => 'Utilisateur modifié avec succes'], 200);
     }
 
     public function getUsers(Request $request)

@@ -30,7 +30,7 @@ class UserRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'image' => 'image|mimes:jpeg,jpg,png|dimensions:max_width=900,max_height=900'
+            'image' => 'image|mimes:jpeg,jpg,png|dimensions:max_width=1200,max_height=1200'
         ];
         if ($this->id) {
             $userId = $this->id;
@@ -44,7 +44,7 @@ class UserRequest extends FormRequest
                     }),
                 ],
                 'password' => 'required|string|min:8',
-                'image' => 'image|mimes:jpeg,jpg,png|dimensions:max_width=900,max_height=900'
+                'image' => 'image|mimes:jpeg,jpg,png|dimensions:max_width=1200,max_height=1200'
             ];
         }
         return $validateRule;

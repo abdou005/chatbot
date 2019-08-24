@@ -24,13 +24,15 @@ class GroupRepository
     /**
      * @param string $title
      * @param string $desc
+     * @param string $image
      * @return Group $group
      */
-    public static function createGroup($title, $desc): Group
+    public static function createGroup($title, $desc, $image): Group
     {
         $group = new Group();
         $group->title = $title;
         $group->desc = $desc;
+        $group->image = $image;
         $group->save();
         return $group;
     }
@@ -38,12 +40,14 @@ class GroupRepository
     /**
      * @param string $title
      * @param string $desc
+     * @param string $image
      * @return Group
      */
-    public function updateGroup($title, $desc)
+    public function updateGroup($title, $desc, $image)
     {
         $this->group->title = $title;
         $this->group->desc = $desc;
+        $this->group->image = $image;
         $this->group->save();
         return $this->group;
     }

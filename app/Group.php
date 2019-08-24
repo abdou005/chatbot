@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Group
  * @property string title
  * @property string desc
+ * @property string image
  *
  * @package App
  */

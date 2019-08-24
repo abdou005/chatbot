@@ -65,7 +65,6 @@ var usersTable = $('#users-table').DataTable({
             'data-singleton="true">' +
             '<i class="fa fa-trash-o"></i>' +
             '</a>';
-        // var editButton = '<a class="btn btn-info btn-sm edit-user" style="margin: 2px;" data-user-id="'+data['id']+'" ><i class="fa fa-pencil"></i> </a>';
         var image = '<a class="showImage" data-path="'+data['image']+'" data-title="'+data['first_name']+'"><img src="'+data['image']+'" class="thumbnail"></a>';
         var checked = '';
         if (data['status'] === 1){
@@ -75,12 +74,14 @@ var usersTable = $('#users-table').DataTable({
             '                    <input type="checkbox" '+checked+' class="status-user" data-user-id="'+data['id']+'">\n' +
             '                    <span class="slider"></span>\n' +
             '                </label>';
+        var editButton = '<a class="btn btn-info btn-sm edit-user" style="margin:2px;" data-user-id="'+data['id']+'" ><i class="fa fa-pencil"></i> </a>';
+
         $('td', row).eq(0).empty().append('<span class="font-blue-steel bold">'+data['first_name']+'</span>');
         $('td', row).eq(1).empty().append('<span class="font-blue-steel bold">'+data['last_name']+'</span>');
         $('td', row).eq(2).empty().append(image);
         $('td', row).eq(3).empty().append('<span class="font-blue-steel bold">'+data['email']+'</span>');
         $('td', row).eq(4).empty().append(checkedBtn);
-        $('td', row).eq(5).empty().append(deleteButton);
+        $('td', row).eq(5).empty().append(deleteButton+editButton);
     }
 });
 
@@ -119,6 +120,8 @@ $("#add-edit-user-modal").on("hidden.bs.modal", function () {
     $('.help-block').empty();
     $('#save-user').prop('disabled',false);
     $('#add-user-form').attr('action','');
+    $('#add-user-form .image-holder').html('');
+    $('.div-image').hide();
     $('#modal-user-title').html(addUserMessageTitle);
     $(this).find("input")
         .val('')
@@ -181,9 +184,13 @@ function onEditUserClick(){
         url : url,
         data : {}
     }).done(function (user) {
-        $("#title").val(group.title);
-        $('#desc').val(group.desc);
-        $('#add-edit-group-modal').modal('toggle');
+        $("#first_name").val(user.first_name);
+        $("#last_name").val(user.last_name);
+        $("#email").val(user.email);
+        $("#password").val(user.pwd_c);
+        $('.div-image').show();
+        $('#add-user-form .image-holder').html('<input type="hidden" name="old_image" value="'+user.image+'" /> <img src="'+user.image+'">');
+        $('#add-edit-user-modal').modal('toggle');
     }).error(function (data) {
     });
 }

@@ -9,6 +9,7 @@ var groupsTable = $('#groups-table').DataTable({
     columns: [
         {name: 'title', data: 'title'},
         {name: 'desc', data: 'desc' },
+        {name: 'image', data: 'image' },
         {name: 'questions_count', data: 'questions_count' },
         {name: 'action', data: null}
     ],
@@ -63,11 +64,13 @@ var groupsTable = $('#groups-table').DataTable({
             'data-singleton="true">' +
             '<i class="fa fa-trash-o"></i>' +
             '</a>';
+        var image = '<a class="showImage" data-path="'+data['image']+'" data-title="'+data['title']+'"><img src="'+data['image']+'" class="thumbnail"></a>';
         var editButton = '<a class="btn btn-info btn-sm edit-group" style="margin:2px;" data-group-id="'+data['id']+'" ><i class="fa fa-pencil"></i> </a>';
         $('td', row).eq(0).empty().append('<span class="font-blue-steel bold">'+data['title']+'</span>');
         $('td', row).eq(1).empty().append('<span class="font-blue-steel bold">'+data['desc']+'</span>');
-        $('td', row).eq(2).empty().append('<span class="font-blue-steel bold">'+data['questions_count']+'</span>');
-        $('td', row).eq(3).empty().append(editButton+' '+deleteButton);
+        $('td', row).eq(2).empty().append(image);
+        $('td', row).eq(3).empty().append('<span class="font-blue-steel bold">'+data['questions_count']+'</span>');
+        $('td', row).eq(4).empty().append(editButton+' '+deleteButton);
     }
 });
 
@@ -94,6 +97,8 @@ $("#add-edit-group-modal").on("hidden.bs.modal", function () {
     $('.help-block').empty();
     $('#save-group').prop('disabled',false);
     $('#add-group-form').attr('action','');
+    $('#add-group-form .image-holder').html('');
+    $('.div-image').hide();
     $('#modal-group-title').html(addGroupMessageTitle);
     $(this).find("input")
         .val('')
@@ -160,6 +165,8 @@ function onEditGroupClick(){
     }).done(function (group) {
         $("#title").val(group.title);
         $('#desc').val(group.desc);
+        $('.div-image').show();
+        $('#add-group-form .image-holder').html('<input type="hidden" name="old_image" value="'+group.image+'" /> <img src="'+group.image+'">');
         $('#add-edit-group-modal').modal('toggle');
     }).error(function (data) {
     });
