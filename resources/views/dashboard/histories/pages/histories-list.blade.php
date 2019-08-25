@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <!-- Conversations are loaded here -->
-                    <div class="direct-chat-messages" style="height: 500px;">
+                    <div class="direct-chat-messages" style="height: 500px; overflow-y: auto;">
                         <div class="direct-chat-msg">
                             <div class="direct-chat-msg right">
                                     <div class="direct-chat-info clearfix">

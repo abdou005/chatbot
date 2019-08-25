@@ -21,13 +21,14 @@ class UserController extends Controller
     public function getHistoriesByGroup($groupId, Request $request)
     {
         $user = auth()->user();
+        $group = Group::findOrFail($groupId);
         $histories = $user->histories()
             ->join('questions', 'questions.id', '=', 'histories.question_id')
             ->where('questions.group_id', '=', $groupId)
             ->with(['question' => function ($question) {
             $question->with('group');
         }])->orderBy('histories.created_at', 'desc')->get();
-        return response()->json($histories, 200);
+        return response()->json(['histories' => $histories, 'group' => $group], 200);
     }
 
     public function responseToQuestion($questionId)

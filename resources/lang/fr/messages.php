@@ -63,9 +63,9 @@ return [
     'group' => 'Groupe',
     'add_group' => 'Ajouter un group',
     'edit_group' => 'Modifier un group',
-    'nb_questions' => 'Nb : Questions',
-    'questions_list_title' => 'Questions',
-    'questions' => 'Questions',
+    'nb_questions' => 'Nb ',
+    'questions_list_title' => 'Base de connaissances',
+    'questions' => 'Base de connaissances',
     'add_question' => 'Ajouter une question',
     'edit_question' => 'Modifier une question',
     'question' => 'Question',
@@ -77,5 +77,7 @@ return [
     'groups_stat' => 'Stat groupe',
     'questions_stat' => 'Stat question',
     'histories' => 'Historiques',
+    'stats' => 'Home',
+
 
 ];

@@ -24,6 +24,13 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
+            @if(Auth::user()->role === \App\User::ADMIN)
+            <li class="@yield('stats') treeview">
+                <a href="{{route('graphs')}}">
+                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.stats')</span>
+                </a>
+            </li>
+            @endif
             <li class="@yield('profile') treeview">
                 <a href="{{route('profile')}}">
                     <i class="fa fa-user-o"></i> <span>@lang('messages.profile')</span>
@@ -37,41 +44,36 @@
             </li>
             @endif
             @if(Auth::user()->role === \App\User::ADMIN)
-            <li class="@yield('stats') treeview">
-                <a href="{{route('graphs')}}">
-                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.stats')</span>
-                </a>
-            </li>
             <li class="@yield('users') treeview">
                 <a href="{{route('user')}}">
                     <i class="fa fa-users"></i> <span>@lang('messages.users')</span>
                 </a>
             </li>
-            <li class="@yield('users_stat') treeview">
-                <a href="{{route('users-stat')}}">
-                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.users_stat')</span>
-                </a>
-            </li>
+            {{--<li class="@yield('users_stat') treeview">--}}
+                {{--<a href="{{route('users-stat')}}">--}}
+                    {{--<i class="fa fa-pie-chart"></i> <span>@lang('messages.users_stat')</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
             <li class="@yield('groups') treeview">
                 <a href="{{route('group')}}">
                     <i class="fa fa-map-o"></i> <span>@lang('messages.groups')</span>
                 </a>
             </li>
-            <li class="@yield('groups_stat') treeview">
-                <a href="{{route('groups-stat')}}">
-                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.groups_stat')</span>
-                </a>
-            </li>
+            {{--<li class="@yield('groups_stat') treeview">--}}
+                {{--<a href="{{route('groups-stat')}}">--}}
+                    {{--<i class="fa fa-pie-chart"></i> <span>@lang('messages.groups_stat')</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
             <li class="@yield('questions') treeview">
                 <a href="{{route('question')}}">
                     <i class="fa fa-question-circle"></i> <span>@lang('messages.questions')</span>
                 </a>
             </li>
-            <li class="@yield('questions_stat') treeview">
-                <a href="{{route('questions-stat')}}">
-                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.questions_stat')</span>
-                </a>
-            </li>
+            {{--<li class="@yield('questions_stat') treeview">--}}
+                {{--<a href="{{route('questions-stat')}}">--}}
+                    {{--<i class="fa fa-pie-chart"></i> <span>@lang('messages.questions_stat')</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
             @endif
             <li class="@yield('') treeview">
                 <a href="#" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#logoutModal">
