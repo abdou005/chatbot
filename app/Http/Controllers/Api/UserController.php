@@ -13,7 +13,7 @@ class UserController extends Controller
         $user = auth()->user();
         $histories = $user->histories()->with(['question' => function ($question) {
             $question->with('group');
-        }])->get();
+        }])->orderBy('created_at', 'desc')->get();
         $user->histories = $histories;
         $user->makeHidden(['token', 'email_verified_at']);
         return response()->json(['status' => 'success', 'data' => $user], 200);

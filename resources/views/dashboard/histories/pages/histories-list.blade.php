@@ -33,7 +33,7 @@
                         <div class="box-body">
                             <div class="col-sm-8 col-sm-offset-2">
                                 <div class="form-group">
-                                    <label for="name" class="control-label"></label>
+                                    <label for="name" class="control-label">Groupe</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-search"></i>
@@ -48,18 +48,33 @@
                     </div>
                     <!-- Conversations are loaded here -->
                     <div class="direct-chat-messages" style="height: 500px;">
-                    </div>
+                        <div class="direct-chat-msg">
+                            <div class="direct-chat-msg right">
+                                    <div class="direct-chat-info clearfix">
+                                            <span class="direct-chat-name pull-right">ChatBot</span>
+                                        </div>
+                                    <img class="direct-chat-img" src="/img/chat-boot-img.png" alt="message user image">
+                                    <div class="direct-chat-text">Bonjour, {{\Illuminate\Support\Facades\Auth::user()->first_name.' '.\Illuminate\Support\Facades\Auth::user()->last_name }}.
+                                    <p>Veuillez saisir ou sélectionner votre question.</p>
+                                    </div>
+                            </div>
+                        </div>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                    <form action="#" method="post">
+                    <form name="add-question-form" id="add-question-form">
                         <div class="input-group">
-                            <select name="question" id="question" class="form-control selectpicker select2" style="width:100%;"></select>
+                            <input type="text" name="question" placeholder="Type Message ..." id="question" class="form-control" required>
                             <span class="input-group-btn">
-                                <button style="padding: 3px 12px;" type="button" class="btn btn-warning btn-flat" id="submit-question">Send</button>
-                            </span>
+                            <button type="submit" class="btn btn-warning btn-flat" id="submit-question">Send</button>
+                          </span>
                         </div>
                     </form>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12 question-div">
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box-footer-->
             </div>

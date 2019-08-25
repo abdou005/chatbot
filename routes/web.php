@@ -22,8 +22,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/groups-select', 'GroupController@getGroupsSelect')->name('group-select');
     Route::get('/questions-select', 'GroupController@getQuestionsSelect')->name('question-select');
 
+    Route::get('/group/{id}/questions', 'QuestionController@getQuestionsByGroup')->name('group-questions-wed');
+
     Route::get('/group/{id}/histories', 'UserController@getHistoriesByGroup')->name('group-histories');
     Route::post('/response-to-question/{id}', 'UserController@responseToQuestion')->name('response-to-question-web');
+
+    Route::post('/group/{id}/add-question', 'UserController@addQuestionAndHistory')->name('add-question-and-history');
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function () {
