@@ -14,7 +14,7 @@ class QuestionController extends Controller
     {
         $name = $request->input('name', null);
         $group = $group = Group::findOrFail($groupId);
-        $questions = Question::where('group_id', '=', $group->id);
+        $questions = Question::where('group_id', '=', $group->id)->where('type', '=', Question::USED);
         if ($name) {
             $questions = $questions->where('question', 'LIKE', '%' . $name . '%');
         }

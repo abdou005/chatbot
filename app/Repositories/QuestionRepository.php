@@ -26,13 +26,15 @@ class QuestionRepository
      * @param string $questionTxt
      * @param string $response
      * @param Group $group
+     * @param integer type
      * @return Question $question
      */
-    public static function createQuestion($questionTxt, $response, Group $group): Question
+    public static function createQuestion($questionTxt, $response, Group $group, $type = Question::USED): Question
     {
         $question = new Question();
         $question->question = $questionTxt;
         $question->response = $response;
+        $question->type = $type;
         $question->group_id = $group->id;
         $question->save();
         return $question;
@@ -65,7 +67,7 @@ class QuestionRepository
      */
     public static function searchQuestionsByFilter($name = null, $pagination = false, $start = 0, $length = 10)
     {
-        $questions = Question::orderBy('created_at', 'desc')->with('group');
+        $questions = Question::orderBy('created_at', 'desc')->where('type', '=' , Question::USED)->with('group');
         if ($name) {
             $questions = $questions->where('question', 'like', '%' . $name . '%')
                 ->orWhere('response', 'like', '%' . $name . '%');

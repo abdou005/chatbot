@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Question
  * @property string question
  * @property string response
+ * @property integer type
  * @property integer group_id
  *
  * @package App
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
 
+    const NOT_USED = 0, USED = 1;
     public function histories()
     {
         return $this->hasMany(History::class);

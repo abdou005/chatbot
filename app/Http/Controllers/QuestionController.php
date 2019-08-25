@@ -67,4 +67,22 @@ class QuestionController extends Controller
         $questionRepository->updateQuestion($questionTxt, $response, $group);
         return response()->json(['status' => 'success', 'message' => 'Question modifiée avec succes'], 200);
     }
+
+    public function getQuestionsByGroup($groupId, Request $request){
+        $user = auth()->user();
+        $name = $request->input('name', null);
+        if ($name){
+//            $histories = $user->histories()
+//                ->join('questions', 'questions.id', '=', 'histories.question_id')
+//                ->where('questions.group_id', '=', $groupId)->select('histories.question_id')->get();
+            $questions = Question::where('question', 'LIKE', '%' . $name . '%')
+                ->where('type', '=', Question::USED)
+                //->whereNotIn('id', $histories)
+                ->where('group_id', '=', $groupId)
+                ->paginate(10);
+            return response()->json($questions, 200);
+        }
+        return response()->json([], 200);
+
+    }
 }

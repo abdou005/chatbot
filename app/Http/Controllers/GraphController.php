@@ -53,7 +53,8 @@ class GraphController extends Controller
         if ($request->ajax()){
             $startAt = $request->input('start_at', 0);
             $endAt = $request->input('end_at', 9999999999);
-            $questions = Question::select('created_at', DB::raw('COUNT(*) as count_question'), DB::raw('DAY(created_at) as day'));
+            $questions = Question::select('created_at', DB::raw('COUNT(*) as count_question'), DB::raw('DAY(created_at) as day'))
+                ->where('type', '=', Question::USED);
             if ($startAt){
                 $questions = $questions->where('created_at', '>=', $startAt);
             }

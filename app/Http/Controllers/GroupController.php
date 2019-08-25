@@ -86,13 +86,14 @@ class GroupController extends Controller
             return response()->json(['message' => 'group required'], 406);
         }
         $user = auth()->user();
-        $histories = $user->histories()
-            ->join('questions', 'questions.id', '=', 'histories.question_id')
-            ->where('questions.group_id', '=', $groupId)->select('histories.question_id')->get();
+//        $histories = $user->histories()
+//            ->join('questions', 'questions.id', '=', 'histories.question_id')
+//            ->where('questions.group_id', '=', $groupId)->select('histories.question_id')->get();
         $incompleteResults = true;
         $questions = Question::where('question', 'LIKE', '%' . $name . '%')
-            ->whereNotIn('id', $histories)
+            //->whereNotIn('id', $histories)
             ->where('group_id', '=', $groupId)
+            ->where('type', '=', Question::USED)
             ->paginate(10);
         $questionsAr = $questions->toArray();
         if ($questionsAr['next_page_url'] == null) {

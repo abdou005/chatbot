@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Group;
 use App\History;
 use App\Question;
+use App\Repositories\QuestionRepository;
 use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -33,15 +35,34 @@ class UserController extends Controller
     {
         $question = Question::findOrFail($questionId);
         $user = auth()->user();
-        $history = $user->histories()->where('question_id', '=', $question->id)->first();
-        if ($history){
-            return response()->json(['message' => 'history already exist'], 406);
-        }
+//        $history = $user->histories()->where('question_id', '=', $question->id)->first();
+//        if ($history){
+//            return response()->json(['message' => 'history already exist'], 406);
+//        }
         $history = new History();
         $history->user_id = $user->id;
         $history->question_id = $question->id;
         $history->save();
         $history->question = $question;
+        $history->user = $user;
+        return response()->json($history, 200);
+    }
+
+    public function addQuestionAndHistory($groupId, Request $request)
+    {
+        $question = $request->get('question');
+        $user = auth()->user();
+        if (!$question){
+            return response()->json(['message' => 'question required'], 406);
+        }
+        $group = Group::findOrFail($groupId);
+        $response = 'Aucune reponse pour cette question';
+        $questionCreated = QuestionRepository::createQuestion($question, $response, $group, Question::NOT_USED);
+        $history = new History();
+        $history->user_id = $user->id;
+        $history->question_id = $questionCreated->id;
+        $history->save();
+        $history->question = $questionCreated;
         $history->user = $user;
         return response()->json($history, 200);
     }
