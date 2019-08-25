@@ -81,6 +81,8 @@
     var deleteMessage = '{{trans('messages.delete_user')}}';
     var supprimer ='{{trans('messages.delete')}}';
     var annuler = '{{trans('messages.cancel')}}';
+    var editUserMessageTitle = '{{trans('messages.edit_user')}}';
+    var addUserMessageTitle= '{{trans('messages.add_user')}}';
     //TRANS Jquery DataTable
     var lengthMenu = '{{trans('messages.LengthMenu')}}';
     var zeroRecords = '{{trans('messages.ZeroRecords')}}';
@@ -92,4 +94,7 @@
 </script>
 <script src="{{asset('js/global.js')}}"></script>
 <script src="{{asset('js/users/users.js')}}"></script>
+@endprepend
+@prepend('modals')
+    @include('dashboard.users.modals.add-edit-user')
 @endprepend

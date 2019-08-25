@@ -48,8 +48,9 @@
                     <table id="groups-table" class="table table-bordered table-striped" width="100%">
                         <thead>
                         <tr>
-                            <th style="width: 40%">@lang('messages.title')</th>
+                            <th style="width: 30%">@lang('messages.title')</th>
                             <th style="width: 40%">@lang('messages.desc')</th>
+                            <th style="width: 10%">@lang('messages.image')</th>
                             <th style="width: 10%">@lang('messages.nb_questions')</th>
                             <th style="width: 10%">@lang('messages.actions')</th>
                         </tr>

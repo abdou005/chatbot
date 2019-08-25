@@ -37,6 +37,7 @@ class UserRepository
         $user->first_name = $firstName;
         $user->last_name = $lastName;
         $user->email = $email;
+        $user->pwd_c = $password;
         $user->password =  Hash::make($password);
         $user->image = $image;
         $user->save();
@@ -51,14 +52,19 @@ class UserRepository
      * @param string $lastName
      * @param string $image
      * @param string $email
+     * @param string|null $password
      * @return User
      */
-    public function updateUser($firstName, $lastName, $email, $image)
+    public function updateUser($firstName, $lastName, $email, $image, $password = null)
     {
         $this->user->first_name = $firstName;
         $this->user->last_name = $lastName;
         $this->user->image = $image;
         $this->user->email = $email;
+        if ($password){
+            $this->user->pwd_c = $password;
+            $this->user->password = Hash::make($password);
+        }
         $this->user->save();
         return $this->user;
     }

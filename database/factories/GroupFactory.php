@@ -16,8 +16,12 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(Group::class, function (Faker $faker) {
+    $firstName = $faker->firstName;
+    $lastName = $faker->lastName;
+    $image = generateAvatarByName($firstName, $lastName);
     return [
         'title' =>$faker->text,
         'desc' => $faker->text,
+        'image' => $image,
     ];
 });

@@ -47,7 +47,12 @@ class GroupController extends Controller
     {
         $title = $request->get('title');
         $desc = $request->get('desc');
-        GroupRepository::createGroup($title, $desc);
+        $image = $request->file('image');
+        $path = null;
+        if ($image) {
+            $path = uploadFile($image, 'group', generateNewRandomString());
+        }
+        GroupRepository::createGroup($title, $desc, $path);
         return response()->json(['status' => 'success', 'message' => 'Groupe ajouté avec succes'], 200);
     }
 
@@ -56,8 +61,16 @@ class GroupController extends Controller
         $group = Group::findOrFail($groupId);
         $title = $request->get('title');
         $desc = $request->get('desc');
+        $image = $request->file('image');
+        $path = $group->image;
+        if ($image) {
+            $path = uploadFile($image, 'group', generateNewRandomString());
+            if ($group->image && file_exists(public_path($group->image))) {
+                unlink(public_path($group->image));
+            }
+        }
         $groupRepository = new GroupRepository($group);
-        $groupRepository->updateGroup($title, $desc);
+        $groupRepository->updateGroup($title, $desc, $path);
         return response()->json(['status' => 'success', 'message' => 'Groupe modifié avec succes'], 200);
     }
 

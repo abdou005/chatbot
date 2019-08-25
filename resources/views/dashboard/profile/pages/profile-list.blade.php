@@ -72,7 +72,7 @@
                 </ul>
                 <div class="tab-content">
                     <div class="active tab-pane" id="settings">
-                        <form class="form-horizontal" id="edit-user" method="post" action="{{url('/user/'.Auth::user()->id)}}" enctype="multipart/form-data">
+                        <form class="form-horizontal" id="edit-user" method="post" action="{{url('/update-profile/'.Auth::user()->id)}}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group {{ $errors->has('first_name') ? ' has-error' : '' }}">
                                 <label for="first_name" class="col-sm-2 control-label">@lang('messages.first_name')</label>

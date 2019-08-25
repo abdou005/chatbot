@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\Http\Requests\UserRequest;
 use App\History;
 use App\Question;
 use App\Repositories\QuestionRepository;
 use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Validator;
 
 class UserController extends Controller
 {
@@ -72,27 +71,38 @@ class UserController extends Controller
         return view('dashboard.profile.profile-layout-list');
     }
 
-    public function updateUser($userId, Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => [
-                'required', 'email', 'max:255',
-                Rule::unique('users')->historieswhere(function ($query) use ($userId) {
-                    $query->where('id', '!=', $userId);
-                }),
-            ],
-            'image' => 'image|mimes:jpeg,jpg,png|dimensions:max_width=600,max_height=600',
-        ]);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+    public function addUser(UserRequest $request){
+
+        $firstName = $request->get('first_name');
+        $lastName = $request->get('last_name');
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $image = $request->file('image');
+        $path = null;
+        if ($image) {
+            $path = uploadFile($image, 'user_profile', time());
         }
+        if (!$path) {
+            $path = generateAvatarByName($firstName, $lastName);
+        }
+        UserRepository::createUser($firstName, $lastName, $email, $password, $path);
+        return response()->json(['status' => 'success', 'message' => 'Utilisateur ajouté avec succes'], 200);
+    }
+
+    public function findUser($userId){
+        $user = User::findOrFail($userId);
+        return response()->json($user, 200);
+    }
+
+    public function updateUser($userId, UserRequest $request)
+    {
+
         $user = User::findOrFail($userId);
         $firstName = $request->get('first_name');
         $lastName = $request->get('last_name');
         $email = $request->get('email');
         $image = $request->file('image');
+        $password = $request->get('password');
         $avatar = $user->image;
         if ($image) {
             $avatar = uploadFile($image, 'user_profile', generateNewRandomString());
@@ -101,8 +111,8 @@ class UserController extends Controller
             }
         }
         $userRepository = new UserRepository($user);
-        $userRepository->updateUser($firstName, $lastName, $email, $avatar);
-        return redirect('/profile');
+        $userRepository->updateUser($firstName, $lastName, $email, $avatar, $password);
+        return response()->json(['status' => 'success', 'message' => 'Utilisateur modifié avec succes'], 200);
     }
 
     public function getUsers(Request $request)
@@ -137,7 +147,6 @@ class UserController extends Controller
 
     public function updateStatus($userId){
         $user = User::findOrFail($userId);
-        $status = $user->status;
         if($user->status === 1){
             $user->status = 0;
         }else{

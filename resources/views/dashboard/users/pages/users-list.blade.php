@@ -20,7 +20,7 @@
             <i class="ion-ios-list-outline"></i>
             <h3 class="box-title"><b><i>@lang('messages.users_list_title')</i></b></h3>
             <div class="box-tools pull-right">
-
+                <b><a href="" class="pull-right btn btn-sm btn-warning" data-toggle="modal"  data-backdrop="static" data-keyboard="false" data-target="#add-edit-user-modal"><i class="fa fa-plus"> @lang('messages.add')</i></a></b>
             </div>
         </div>
         <!-- /.box-header -->

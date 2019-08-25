@@ -37,6 +37,11 @@
             </li>
             @endif
             @if(Auth::user()->role === \App\User::ADMIN)
+            <li class="@yield('stats') treeview">
+                <a href="{{route('graphs')}}">
+                    <i class="fa fa-pie-chart"></i> <span>@lang('messages.stats')</span>
+                </a>
+            </li>
             <li class="@yield('users') treeview">
                 <a href="{{route('user')}}">
                     <i class="fa fa-users"></i> <span>@lang('messages.users')</span>

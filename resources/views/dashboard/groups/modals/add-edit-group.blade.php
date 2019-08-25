@@ -30,6 +30,19 @@
                                             <strong class="help-block desc_error"></strong>
                                         </div>
                                     </div>
+                                    <div class="form-group div-image" style="display: none;">
+                                        <label class="col-sm-offset-2 col-sm-3 control-label"></label>
+                                        <div class="col-sm-6 image-holder">
+                                            <div class=""></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="image" class="col-sm-offset-2 col-sm-3 control-label">@lang('messages.image')</label>
+                                        <div class="col-sm-6">
+                                            <input type="file" name="image" class="form-control" accept="image/*" id="image" placeholder="@lang('messages.image')">
+                                            <strong class="help-block image_error"></strong>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="box-footer">
                                     <div class="row">

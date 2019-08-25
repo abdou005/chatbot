@@ -65,7 +65,6 @@ var usersTable = $('#users-table').DataTable({
             'data-singleton="true">' +
             '<i class="fa fa-trash-o"></i>' +
             '</a>';
-        // var editButton = '<a class="btn btn-info btn-sm edit-user" style="margin: 2px;" data-user-id="'+data['id']+'" ><i class="fa fa-pencil"></i> </a>';
         var image = '<a class="showImage" data-path="'+data['image']+'" data-title="'+data['first_name']+'"><img src="'+data['image']+'" class="thumbnail"></a>';
         var checked = '';
         if (data['status'] === 1){
@@ -75,12 +74,14 @@ var usersTable = $('#users-table').DataTable({
             '                    <input type="checkbox" '+checked+' class="status-user" data-user-id="'+data['id']+'">\n' +
             '                    <span class="slider"></span>\n' +
             '                </label>';
+        var editButton = '<a class="btn btn-info btn-sm edit-user" style="margin:2px;" data-user-id="'+data['id']+'" ><i class="fa fa-pencil"></i> </a>';
+
         $('td', row).eq(0).empty().append('<span class="font-blue-steel bold">'+data['first_name']+'</span>');
         $('td', row).eq(1).empty().append('<span class="font-blue-steel bold">'+data['last_name']+'</span>');
         $('td', row).eq(2).empty().append(image);
         $('td', row).eq(3).empty().append('<span class="font-blue-steel bold">'+data['email']+'</span>');
         $('td', row).eq(4).empty().append(checkedBtn);
-        $('td', row).eq(5).empty().append(deleteButton);
+        $('td', row).eq(5).empty().append(deleteButton+editButton);
     }
 });
 
@@ -110,6 +111,90 @@ $('body').confirmation({
         deleteUser($(this).data('userId'));
     }
 });
+
+/**
+ * Clear addEditGroupForm form ,clear inputs when the user close the modal window
+ */
+$("#add-edit-user-modal").on("hidden.bs.modal", function () {
+    $('.form-group div').removeClass('has-error');
+    $('.help-block').empty();
+    $('#save-user').prop('disabled',false);
+    $('#add-user-form').attr('action','');
+    $('#add-user-form .image-holder').html('');
+    $('.div-image').hide();
+    $('#modal-user-title').html(addUserMessageTitle);
+    $(this).find("input")
+        .val('')
+        .end();
+});
+
+/**
+ * ajax function when user submit form
+ * Add Edit User
+ */
+$(function(){
+    $('#add-user-form').submit(function (event) {
+        event.preventDefault();
+        $('#save-user').prop('disabled',true);
+        var formData = new FormData($('#add-user-form')[0]);
+        var url = $('#add-user-form')[0].action;
+        $.ajax({
+            method : 'POST',
+            url : url,
+            data : formData,
+            contentType: false,
+            processData: false
+        }).done(function (data) {
+            displayMessage(data.message, 'panelSuccess', 1000);
+            usersTable.ajax.reload();
+            $('#add-edit-user-modal').modal('toggle');
+        }).error(function (data) {
+            $('#save-user').prop('disabled',false);
+            var errors = data.responseJSON.errors;
+            $('.form-group').removeClass('has-error');
+            $('.help-block').empty();
+            $.each(errors, function( index, value ) {
+                $("."+index+"_error ").append("<strong>"+value.join('<br/>')+"</strong>");
+                $('.'+index+"_error ").parent().addClass('has-error');
+            })
+        });
+    });
+});
+
+/**
+ *Attach Click event to editUser class using delegation
+ */
+$(function () {
+    $( "#users-table" ).on( "click",".edit-user", function( event ) {
+        event.preventDefault();
+        var userId = ($(this).data('userId'));
+        $('#add-user-form').attr('action', window.location.pathname + (window.location.pathname.slice(-1) == '/' ? '' : '/') +userId);
+        $('#modal-user-title').html(editUserMessageTitle);
+        onEditUserClick();
+    });
+});
+
+/**
+ * Ajax function edit User
+ */
+function onEditUserClick(){
+    var url = $('#add-user-form')[0].action;
+    $.ajax({
+        method : 'GET',
+        url : url,
+        data : {}
+    }).done(function (user) {
+        $("#first_name").val(user.first_name);
+        $("#last_name").val(user.last_name);
+        $("#email").val(user.email);
+        $("#password").val(user.pwd_c);
+        $('.div-image').show();
+        $('#add-user-form .image-holder').html('<input type="hidden" name="old_image" value="'+user.image+'" /> <img src="'+user.image+'">');
+        $('#add-edit-user-modal').modal('toggle');
+    }).error(function (data) {
+    });
+}
+
 /**
  * ajax function
  * @param userId
